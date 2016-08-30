@@ -61,6 +61,10 @@
 #include "string.h"
 #include "stringlist.h"
 
+//#include "module.h"
+typedef struct Module__Record *Module_Type;
+  /** type defined here to break circular include when importing "module.h" */
+
 //#include "target.h"
 typedef int Target_Bank;
   /** type defined here to break circular include when importing "target.h" */
@@ -164,7 +168,7 @@ void Banking_finalize (void);
 /* ACCESS             */
 /*--------------------*/
 
-void Banking_adaptAreaNameWhenBanked (in /*Module_Type*/ void *module,
+void Banking_adaptAreaNameWhenBanked (in Module_Type module,
 				      inout String_Type *areaName);
   /** returns adapted <areaName> whenever multiple conditions hold:
       banking is active, the area name specifies the generic banked
