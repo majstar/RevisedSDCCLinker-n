@@ -8,15 +8,29 @@
 SHELL:=/bin/sh
 .SUFFIXES:
 
+#------------------------
+#- file name extensions -
+#------------------------
+
+#-- extension of executable file names
+EXEEXT := 
+
+#-- extension of object file names
+OBJEXT := .o
+
+#-- extension of source file names
+SRCEXT := .c
+
+#-- extension of header file names
+HDREXT := .h
+
+
 #---------------------------
 #- target root directories -
 #---------------------------
 
-# the root of the file system (for convenience)
-ROOT_DIR:=C:
-
 #-- the root of the complete installation target directories
-TARGET_ROOT_DIR:=$(ROOT_DIR)/temp/SDCCLinker
+TARGET_ROOT_DIR:=$(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #-- the root directory of C include and src files
 TARGET_SOURCE_DIR:=$(TARGET_ROOT_DIR)/src
@@ -31,46 +45,46 @@ TARGET_DOCUMENTATION_DIR:=$(TARGET_ROOT_DIR)/doc
 #- target files -
 #----------------
 
+#-- the name of the target SDCC linker executable file
+TARGET_EXECUTABLE_NAME:=sdldgb_rev$(EXEEXT)
 #-- the path name of the target SDCC linker program
-TARGET_EXECUTABLE:=$(TARGET_ROOT_DIR)/rev_sdcc_linker.exe
+TARGET_EXECUTABLE:=$(TARGET_ROOT_DIR)/$(TARGET_EXECUTABLE_NAME)
+#-- the name of the target SDCC linker document file
+TARGET_DOCUMENTATION_FILE:=rev_sdcc_linker-documentation.pdf
 #-- the path name of the target SDCC linker documentation
-TARGET_DOCUMENTATION:=$(TARGET_ROOT_DIR)/rev_sdcc_linker-documentation.pdf
+TARGET_DOCUMENTATION:=$(TARGET_ROOT_DIR)/$(TARGET_DOCUMENTATION_FILE)
 
 #--------------------
 #- support programs -
 #--------------------
 
-programDirectory:=$(ROOT_DIR)/Programme
-binDirectory:=$(programDirectory)/Cygwin/bin
-
 #-- the path name of the copy program (CP)
-CP_PROGRAM:=$(binDirectory)/cp.exe
+CP_PROGRAM:=cp$(EXEEXT)
 
 #-- the path name of the GAWK program
-GAWK_PROGRAM:=$(binDirectory)/gawk.exe
+GAWK_PROGRAM:=gawk$(EXEEXT)
 
 #-- the path name of the directory creation program (MKDIR)
-MKDIR_PROGRAM:=$(binDirectory)/mkdir.exe
+MKDIR_PROGRAM:=mkdir$(EXEEXT)
 
 #-- the path name of the file movement program (MV)
-MV_PROGRAM:=$(binDirectory)/mv.exe
+MV_PROGRAM:=mv$(EXEEXT)
 
 #-- the path name of the file deletion program (RM)
-RM_PROGRAM:=$(binDirectory)/rm.exe -f
+RM_PROGRAM:=rm$(EXEEXT) -f
 
 #-- the directory of the specific development tools
 currentFilePath:=$(strip $(dir $(lastword $(MAKEFILE_LIST))))
 TOOLS_DIR:=$(currentFilePath)tools
 
 #-- the C compiler and linker
-C_PATH:=$(programDirectory)/Programmierung/Microsoft_Visual_C++
-CCOMP:=$(C_PATH)/bin/cl
-CLINKER:=$(C_PATH)/bin/link
+CCOMP:=gcc$(EXEEXT)
+#CLINKER:=ld$(EXEEXT)
+CLINKER:=gcc$(EXEEXT)
 
 #-- the LaTeX and MetaPost programs
-texPath:=$(programDirectory)/Buero/TeX/MiKTeX_2.8/miktex/bin
-PDFLATEX:=$(texPath)/pdflatex
-METAPOST:=$(texPath)/mp
+PDFLATEX:=pdflatex$(EXEEXT)
+METAPOST:=mpost$(EXEEXT)
 
 #---------------------------
 #- configuration variables -
@@ -85,3 +99,14 @@ SUPPORTING_MODULE_NAME_LIST:=area banking codeoutput codesequence error file \
 
 #-- the name list of all supporting modules (including main) --
 MODULE_NAME_LIST:=$(SUPPORTING_MODULE_NAME_LIST) main
+
+#-------------------------------
+#- installation path variables -
+#-------------------------------
+
+#-- default values for installation path variables
+prefix?=/usr/local
+exec_prefix:=${prefix}
+bindir:=${exec_prefix}/bin
+datarootdir:=${prefix}/share
+docdir:=${datarootdir}/sdcc/doc
