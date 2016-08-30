@@ -7,6 +7,8 @@ include _localconfigure.mk
 
 #-----------------
 
+.PHONY: all deploy process prepare clean install uninstall
+
 all: deploy
 
 deploy: process
@@ -25,6 +27,8 @@ targetFiles:= \
     $(TARGET_DOCUMENTATION_DIR)/linker_documentation.tex \
     $(DOCUMENTATION_FIGURE_DIRECTORY)/linkerFigures.mp \
     $(DOCUMENTATION_FIGURE_DIRECTORY)/ModuleView.mp
+
+.PHONY: $(DOCUMENTATION_FIGURE_DIRECTORY)
 
 $(DOCUMENTATION_FIGURE_DIRECTORY):
 	$(MKDIR_PROGRAM) -p $@
@@ -67,7 +71,7 @@ $(pictures): | $(DOCUMENTATION_FIGURE_DIRECTORY)
 
 $(pictures):
 	cd $(DOCUMENTATION_FIGURE_DIRECTORY) \
-	&& $(METAPOST) -quiet linkerFigures
+	&& $(METAPOST) linkerFigures
 
 # all TeX include files describing the interfaces
 texFiles:=$(SUPPORTING_MODULE_NAME_LIST:%=$(TARGET_DOCUMENTATION_DIR)/%.tex)
@@ -88,8 +92,8 @@ pdfFile:=$(TARGET_DOCUMENTATION_DIR)/$(mainFileStem).pdf
 $(pdfFile): $(pictures) $(allTexFiles) \
     $(TARGET_DOCUMENTATION_DIR)/$(mainFileStem).tex
 	cd $(TARGET_DOCUMENTATION_DIR) \
-	&& $(PDFLATEX) -quiet $(mainFileStem) \
-	&& $(PDFLATEX) -quiet $(mainFileStem)
+	&& $(PDFLATEX) $(mainFileStem) \
+	&& $(PDFLATEX) $(mainFileStem)
 
 process: $(pdfFile)
 
@@ -108,9 +112,9 @@ deploy:
 	$(CP_PROGRAM) $(pdfFile) $(TARGET_DOCUMENTATION)
 
 
-#==============
+#===========
 #= CLEANUP =
-#==============
+#===========
 
 # -- cleaning up the temporary files generated
 # -- for the documentation: the figures, logs and the interface
@@ -124,3 +128,19 @@ clean:
 	$(RM_PROGRAM) $(TARGET_DOCUMENTATION_DIR)/$(mainFileStem).aux
 	$(RM_PROGRAM) $(TARGET_DOCUMENTATION_DIR)/$(mainFileStem).log
 	$(RM_PROGRAM) $(TARGET_DOCUMENTATION_DIR)/$(mainFileStem).pdf
+
+
+#===========
+#= INSTALL =
+#===========
+
+install: deploy
+	$(CP_PROGRAM) $(TARGET_DOCUMENTATION) $(docdir)/$(TARGET_DOCUMENTATION_FILE)
+
+
+#=============
+#= UNINSTALL =
+#=============
+
+uninstall:
+	$(RM_PROGRAM) $(docdir)/$(TARGET_DOCUMENTATION_FILE)
