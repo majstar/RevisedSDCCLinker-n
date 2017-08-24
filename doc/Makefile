@@ -92,8 +92,8 @@ pdfFile:=$(TARGET_DOCUMENTATION_DIR)/$(mainFileStem).pdf
 $(pdfFile): $(pictures) $(allTexFiles) \
     $(TARGET_DOCUMENTATION_DIR)/$(mainFileStem).tex
 	cd $(TARGET_DOCUMENTATION_DIR) \
-	&& $(PDFLATEX) $(mainFileStem) \
-	&& $(PDFLATEX) $(mainFileStem)
+	&& $(PDFLATEX) -interaction=nonstopmode $(mainFileStem) \
+	&& $(PDFLATEX) -interaction=nonstopmode $(mainFileStem)
 
 process: $(pdfFile)
 

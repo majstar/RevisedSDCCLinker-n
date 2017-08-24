@@ -203,7 +203,7 @@ $0 !~ /\#define/ && parseState == ParseState_inMacroDefinition \
 #--------------------
 
 (parseState == ParseState_inTypeDefinition) \
-	   && ( /}/ || /);$/) \
+	   && (/}/ || /\);\r?$/) \
 {
   # the end of a multiline type definition
   convertAndPrintTypeDefinitionLine();
