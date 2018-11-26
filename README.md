@@ -57,7 +57,7 @@ Installation directories are specified in `_configure.mk`, you can change them:
 
 ## Note for non-Linux platforms
 
-Original sources with Windows build tools and Windiws binaries of the Revised SDCC Linker are available [here][Dr_Thomas_Tensi].
+Original sources with Windows build tools and Windiws binaries of the Revised SDCC Linker are available [here][Dr_Thomas_Tensi_linker].
 
 [Dr_Thomas_Tensi]: http://www.tensi.eu
 [Dr_Thomas_Tensi_linker]: http://www.tensi.eu/thomas/programming/asxxx-linker/asxxxlinker.html
